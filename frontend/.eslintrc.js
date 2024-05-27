@@ -1,11 +1,4 @@
 module.exports = {
-  languageOptions: {
-    globals: {
-      browser: true,
-      node: true,
-      es6: true,
-    },
-  },
   files: ['*.test.js'],
   env: {
     jest: true,
@@ -23,6 +16,13 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
+    languageOptions: {
+      globals: {
+        browser: true,
+        node: true,
+        es6: true,
+      },
+    },
   },
   plugins: [
     'react',
@@ -85,5 +85,5 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
 };
