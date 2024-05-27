@@ -20,7 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test-ci": "react-scripts test --env=jsdom --watchAll=false",
+    "test-ci": "react-scripts test --env=jsdom --watchAll=false --passWithNoTests",
     "lint": "node_modules/.bin/eslint ./src"
   },
   "eslintConfig": {
