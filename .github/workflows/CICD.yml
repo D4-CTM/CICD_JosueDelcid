@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on: 
   push: 
@@ -54,21 +54,19 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
-  
+
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: 'npm'
-        
+      
       - name: Install deps
         run: cd frontend && npm i
-  
-      - name: 🔍 Lint code
-        run: |
-          cd frontend
-          eslint ./src --parser-options ecmaVersion:2018      
 
+      - name: 🔍 Lint code
+        run: cd frontend && npm run lint
+  
   test:
     name: 🪛 Run Unit Tests
     needs: build
