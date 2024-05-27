@@ -1,20 +1,21 @@
 module.exports = {
-  parserOptions: {
-    ecmaVersion: 2021,
+  languageOptions: {
+    globals: {
+      browser: true,
+      node: true,
+      es6: true,
+    },
   },
+  files: ['*.test.js'],
   env: {
-    browser: true,
-    es6: true,
+    jest: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
+    ecmaVersion: 2021,
     ecmaFeatures: {
       jsx: true,
     },
