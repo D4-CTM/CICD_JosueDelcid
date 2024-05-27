@@ -67,7 +67,7 @@ jobs:
       - name: 🔍 Lint code
         run: |
           cd frontend
-          eslint ./src --ecmaVersion 2018        
+          eslint ./src --parser-options ecmaVersion:2018      
 
   test:
     name: 🪛 Run Unit Tests
