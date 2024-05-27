@@ -1,44 +1,32 @@
-import React from 'react';
+import Home from "../src/component/Home/Home/Home";
+import { Routes, Route } from "react-router-dom";
+import React, { createContext } from "react";
+import About from "./component/Home/About/About";
+import Dashboard from "./component/Dashoboard/Dashboard/Dashboard";
+import LoginModal from "./component/Login/LoginModal";
+import PrivateRoute from "./component/Login/PrivateRoute";
+import NotFound from "./component/NotFound";
+export const UserContext = createContext();
 
-import { Cards, CountryPicker, Chart } from './components';
-import { fetchData } from './api/';
-import styles from './App.module.css';
-
-import image from './images/image.png';
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {},
-      country: '',
-    };
-  }
-
-  async componentDidMount() {
-    const data = await fetchData();
-
-    this.setState({ data });
-  }
-
-  handleCountryChange = async (country) => {
-    const data = await fetchData(country);
-
-    this.setState({ data, country: country });
-  }
-
-  render() {
-    const { data, country } = this.state;
-
-    return (
-      <div className={styles.container}>
-        <img className={styles.image} src={image} alt="COVID-19" />
-        <Cards data={data} />
-        <CountryPicker handleCountryChange={this.handleCountryChange} />
-        <Chart data={data} country={country} /> 
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<LoginModal />} />
+        <Route
+          path="/dashboard/*"
+          element={
+            <PrivateRoute redirectTo="/login">
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
+  );
+};
 
 export default App;
