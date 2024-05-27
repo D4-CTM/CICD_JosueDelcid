@@ -15,13 +15,16 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 2018,
-    sourceType: 'module',
+    ecmaVersion: 2022,
+    sourceType: "module"
   },
   plugins: [
+    "babel",
     'react',
   ],
   rules: { 
+    "babel/no-invalid-this": "error",
+    "babel/valid-typeof": "error",
     "import/prefer-default-export": 0,
     "max-len": [
       2,
@@ -76,5 +79,5 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
 };
