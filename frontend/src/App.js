@@ -14,7 +14,7 @@ class App extends React.Component {
       country: '',
     };
   }
-  
+
   async componentDidMount() {
     const data = await fetchData();
 
