@@ -9,6 +9,8 @@ module.exports = {
   files: ['*.test.js'],
   env: {
     jest: true,
+    "browser": true,
+    "jest": true
   },
   globals: {
     Atomics: 'readonly',
