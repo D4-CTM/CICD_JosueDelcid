@@ -7,11 +7,14 @@ import styles from './App.module.css';
 import image from './images/image.png';
 
 class App extends React.Component {
-  state = {
-    data: {},
-    country: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {},
+      country: '',
+    };
   }
-
+  
   async componentDidMount() {
     const data = await fetchData();
 
