@@ -1,5 +1,4 @@
 module.exports = {
-  files: ['*.test.js'],
   env: {
     jest: true,
     "browser": true,
@@ -86,4 +85,9 @@ module.exports = {
       }
     ]
   },
+  overrides: [
+    {
+      files: ['*.test.js'],
+    }
+  ]
 };
