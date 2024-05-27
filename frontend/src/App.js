@@ -1,41 +1,48 @@
-import React from 'react';
+import './App.css';
+import { useState } from 'react';
+import { Button, TextField, Paper } from '@material-ui/core';
+import getHashedValue from './services/api.client';
 
-import { Cards, CountryPicker, Chart } from './components';
-import { fetchData } from './api/';
-import styles from './App.module.css';
+function App() {
+  const [valeToHash, setValueToHash] = useState('');
+  const [hashedValue, setHashedValue] = useState('');
 
-import image from './images/image.png';
-
-class App extends React.Component {
-  state = {
-    data: {},
-    country: '',
+  function updateValueToHash(e) {
+    setValueToHash(e.target.value);
   }
 
-  async componentDidMount() {
-    const data = await fetchData();
-
-    this.setState({ data });
+  async function getHashedValueFromApi() {
+    const hash = await getHashedValue(valeToHash);
+    setHashedValue(hash);
   }
 
-  handleCountryChange = async (country) => {
-    const data = await fetchData(country);
-
-    this.setState({ data, country: country });
-  }
-
-  render() {
-    const { data, country } = this.state;
-
-    return (
-      <div className={styles.container}>
-        <img className={styles.image} src={image} alt="COVID-19" />
-        <Cards data={data} />
-        <CountryPicker handleCountryChange={this.handleCountryChange} />
-        <Chart data={data} country={country} /> 
-      </div>
-    );
-  }
+  return (
+    <div className="Div">
+      <h2 id="page-title">AnyHasher</h2>
+      <Paper>
+        <TextField
+          fullWidth
+          color="primary"
+          size="medium"
+          label="Enter value to hash"
+          variant="outlined"
+          value={valeToHash}
+          onChange={updateValueToHash}
+        />
+      </Paper>
+      <br />
+      <Button
+        variant="contained"
+        color="primary"
+        size="medium"
+        disabled={!valeToHash}
+        onClick={getHashedValueFromApi}
+      >
+        GET HASH
+      </Button>
+      <p style={{ fontWeight: 'bolder' }}>{hashedValue}</p>
+    </div>
+  );
 }
 
 export default App;
