@@ -7,7 +7,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
-
+  
 jobs: 
   build: 
     name: Build Frontend Artifact
@@ -34,11 +34,6 @@ jobs:
         with: 
           path: frontend/build
 
-      # - id: build-publish
-      #   uses: bitovi/github-actions-react-to-github-pages@v1.2.2
-      #   with:
-      #     path: build # change to your build folder
-      
   audit:
     name: 🪄 Audit Frontend Deps
     runs-on: ubuntu-latest
@@ -112,6 +107,41 @@ jobs:
       - name: Build
         run: cd frontend && npm run build
 
+  code-coverage:
+    name: 📊 Run Code Coverage
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      
+      - name: Install Dependencies
+        run: cd frontend && npm i
+      
+      - name: Run Code Coverage
+        run: cd frontend && npm run coverage
+
+  dependency-update:
+    name: 🔄 Check for Dependency Updates
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      
+      - name: Check for Updates
+        run: cd frontend && npm outdated
+
   deploy:
     name: 📦 Deploy Frontend Artifact
     runs-on: ubuntu-latest
@@ -119,6 +149,8 @@ jobs:
       - lint
       - test
       - static-analysis
+      - code-coverage
+      - dependency-update
     if: github.ref == 'refs/heads/main'
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
@@ -150,3 +182,50 @@ jobs:
           cd frontend/e2e
           npm i
           npm run smoke
+
+  staging-deploy:
+    name: 🚀 Deploy to Staging Environment
+    runs-on: ubuntu-latest
+    needs: 
+      - lint
+      - test
+      - static-analysis
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      
+      - name: Install Dependencies
+        run: cd frontend && npm i
+      
+      - name: Build
+        run: cd frontend && npm run build
+      
+      - name: Deploy to Staging Server
+        run: echo "Deploying to staging server..."
+
+  integration-tests:
+    name: 🔍 Run Integration Tests
+    runs-on: ubuntu-latest
+    needs: staging-deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: cd frontend && npm i
+
+      - name: Run Integration Tests
+        run: cd frontend && npm run test-integration
