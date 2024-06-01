@@ -8,4 +8,4 @@ queries:
   - name: Extended Security
     uses: security-extended
   - name: Security and Quality
-    uses: security-and-qualityx
+    uses: security-and-quality
